@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DishData" format=3 uid="uid://c8ofa6rt7iv67"]
+
+[ext_resource type="Script" uid="uid://cmo8vsu0430oc" path="res://scripts/resource_code/DishData.gd" id="1_gbiu7"]
+
+[resource]
+script = ExtResource("1_gbiu7")
+metadata/_custom_type_script = "uid://cmo8vsu0430oc"

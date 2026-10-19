@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DishData" format=3 uid="uid://bqolhwpnrd638"]
+
+[ext_resource type="Texture2D" uid="uid://bk75uo5bjei5g" path="res://assets/dishes/chickenwings.png" id="1_7n8nw"]
+[ext_resource type="Script" uid="uid://cmo8vsu0430oc" path="res://scripts/resource_code/DishData.gd" id="1_r25sh"]
+
+[resource]
+script = ExtResource("1_r25sh")
+dish_name = "ChickenWings"
+dish_icon = ExtResource("1_7n8nw")
+metadata/_custom_type_script = "uid://cmo8vsu0430oc"

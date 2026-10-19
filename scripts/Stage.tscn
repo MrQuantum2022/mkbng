@@ -1,0 +1,169 @@
+[gd_scene format=3 uid="uid://n6qaug8ksw56"]
+
+[ext_resource type="Script" uid="uid://c11tdxkcmfc70" path="res://scripts/camera_shake.gd" id="1_a0cub"]
+[ext_resource type="Texture2D" uid="uid://uqujjs744xjr" path="res://assets/character/smashy.png" id="1_mk8v6"]
+[ext_resource type="Script" uid="uid://chyvcn1uuh4hc" path="res://scripts/PlayerFSM.gd" id="1_qm4n3"]
+[ext_resource type="Script" uid="uid://3nrh8xpvf2jw" path="res://scripts/PlayerStats.gd" id="2_bb737"]
+[ext_resource type="Resource" uid="uid://bqolhwpnrd638" path="res://Resources/dishes/ChickenWings.tres" id="2_c2lxw"]
+[ext_resource type="Script" uid="uid://cvy0710cqcm8p" path="res://scripts/TimingEngine.gd" id="3_c2lxw"]
+[ext_resource type="Script" uid="uid://ytmo17wf753p" path="res://scripts/AnimationController.gd" id="3_lm2ek"]
+[ext_resource type="Texture2D" uid="uid://d2043llhryoo5" path="res://assets/TIMER.jpg" id="4_bb737"]
+[ext_resource type="Texture2D" uid="uid://h3lsbh56wabn" path="res://assets/character/bumpy.png" id="6_wawpf"]
+[ext_resource type="Texture2D" uid="uid://cef4tyddgjlxl" path="res://assets/dishes/cholebtaure.png" id="7_cfhfo"]
+[ext_resource type="Script" uid="uid://c4rpmcibtj3wx" path="res://scripts/HUDManager.gd" id="10_63o5b"]
+
+[sub_resource type="Environment" id="Environment_c2lxw"]
+background_mode = 1
+background_color = Color(0.18993977, 0.45814228, 0.44166306, 1)
+background_energy_multiplier = 1.15
+ambient_light_color = Color(0.39491194, 0.45460427, 0.6064608, 1)
+reflected_light_source = 2
+glow_enabled = true
+glow_bloom = 0.11
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07x27"]
+albedo_color = Color(0.82267946, 0.5683025, 0.16081682, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ql73s"]
+material = SubResource("StandardMaterial3D_07x27")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roc38"]
+albedo_color = Color(0.34483805, 0.6532152, 0.29718596, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v0s4m"]
+material = SubResource("StandardMaterial3D_roc38")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_63o5b"]
+size = Vector2(200, 37)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_a0cub"]
+size = Vector2(235, 23)
+
+[node name="Stage_Main" type="Node3D" unique_id=1689770734]
+
+[node name="Environment" type="Node3D" parent="." unique_id=1837582071]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=565311043]
+environment = SubResource("Environment_c2lxw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=645674887]
+transform = Transform3D(0.998731, -0.04376785, -0.024916748, -0.025691725, -0.868284, 0.49540162, -0.043317482, -0.49413288, -0.8683065, 0, 7.716111, -22.160507)
+
+[node name="Floor" type="MeshInstance3D" parent="Environment" unique_id=1205248971]
+transform = Transform3D(10.070451, 0, 0, 0, 1, 0, 0, 0, 10.292456, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ql73s")
+
+[node name="Table" type="MeshInstance3D" parent="Environment" unique_id=2108682964]
+transform = Transform3D(7.4530077, 0, 0, 0, 1, 0, 0, 0, 2.095139, 0.080616, 0.7890241, 0)
+mesh = SubResource("BoxMesh_v0s4m")
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=1795292533]
+script = ExtResource("1_a0cub")
+
+[node name="MainCamera" type="Camera3D" parent="CameraRig" unique_id=112345792]
+transform = Transform3D(-0.99999183, -0.00014413761, -0.0040456825, 0, 0.9993659, -0.035604924, 0.004048249, -0.035604633, -0.99935776, 0.021042794, 2.4517026, -15.809372)
+fov = 27.3
+near = 0.018
+
+[node name="Combatants" type="Node3D" parent="." unique_id=850681139]
+
+[node name="Player_Character" type="Node3D" parent="Combatants" unique_id=638958690]
+
+[node name="Visuals" type="Sprite3D" parent="Combatants/Player_Character" unique_id=30255118 node_paths=PackedStringArray("player_fsm")]
+transform = Transform3D(0.625, 0, 0, 0, 0.625, 0, 0, 0, 0.625, -1.893, 2.146, 0.887)
+billboard = 2
+texture = ExtResource("1_mk8v6")
+script = ExtResource("3_lm2ek")
+player_fsm = NodePath("../PlayerFSM")
+
+[node name="PlayerFSM" type="Node" parent="Combatants/Player_Character" unique_id=1420658141 node_paths=PackedStringArray("player_stats", "timing_engine")]
+script = ExtResource("1_qm4n3")
+current_dish = ExtResource("2_c2lxw")
+player_stats = NodePath("../PlayerStats")
+timing_engine = NodePath("../TimingEngine")
+
+[node name="PlayerStats" type="Node" parent="Combatants/Player_Character" unique_id=1128437378]
+script = ExtResource("2_bb737")
+
+[node name="TimingEngine" type="Node" parent="Combatants/Player_Character" unique_id=833327574]
+script = ExtResource("3_c2lxw")
+
+[node name="Boss_Character" type="Node3D" parent="Combatants" unique_id=1502212122]
+
+[node name="Visuals" type="Sprite3D" parent="Combatants/Boss_Character" unique_id=1432332142]
+transform = Transform3D(0.805, 0, 0, 0, 0.805, 0, 0, 0, 0.805, 2.102, 2.488, 1.058)
+billboard = 2
+texture = ExtResource("6_wawpf")
+
+[node name="OpponentAI" type="Node" parent="Combatants/Boss_Character" unique_id=1604360655]
+
+[node name="Food_Zone" type="Marker3D" parent="." unique_id=104323161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4396797, 0)
+
+[node name="Current_Dish" type="Sprite3D" parent="Food_Zone" unique_id=831779372]
+transform = Transform3D(0.26, 0, 0, 0, 0.26, 0, 0, 0, 0.26, 0, 0.2706132, -0.51)
+billboard = 2
+texture = ExtResource("7_cfhfo")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=726112786 node_paths=PackedStringArray("player_stats")]
+script = ExtResource("10_63o5b")
+player_stats = NodePath("../Combatants/Player_Character/PlayerStats")
+
+[node name="TimingRing_UI" type="TextureRect" parent="HUD" unique_id=791016609]
+custom_maximum_size = Vector2(100, 100)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -50.0
+offset_right = -50.0
+offset_bottom = 50.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("4_bb737")
+expand_mode = 2
+
+[node name="StomachBar" type="TextureProgressBar" parent="HUD" unique_id=740173228]
+custom_minimum_size = Vector2(0.15, 0)
+custom_maximum_size = Vector2(200, -1)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -235.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_over = SubResource("PlaceholderTexture2D_63o5b")
+texture_progress = SubResource("PlaceholderTexture2D_a0cub")
+
+[node name="ChokeGauge" type="TextureProgressBar" parent="HUD" unique_id=288422628]
+custom_minimum_size = Vector2(0.15, 0)
+custom_maximum_size = Vector2(200, -1)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -117.5
+offset_top = -40.0
+offset_right = 117.5
+grow_horizontal = 2
+grow_vertical = 0
+texture_over = SubResource("PlaceholderTexture2D_63o5b")
+texture_progress = SubResource("PlaceholderTexture2D_a0cub")
+
+[node name="HydrationMeter" type="TextureProgressBar" parent="HUD" unique_id=445676405]
+custom_minimum_size = Vector2(0.15, 0)
+custom_maximum_size = Vector2(200, -1)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 235.0
+grow_vertical = 0
+texture_over = SubResource("PlaceholderTexture2D_63o5b")
+texture_progress = SubResource("PlaceholderTexture2D_a0cub")
